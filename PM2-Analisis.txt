@@ -1,0 +1,22 @@
+4 Alianzas se van a enfrentar en un torneo. Cada alienza tendra alrededor de 8 participantes
+
+La estructura de las alienzas será la siguiente:
+  - nombre : cadena
+  - puntos a favor : entero
+  - puntos en contra : entero
+  - esmeraldas : entero
+  - integrantes : arreglo de jugador[]
+
+La estructura de los jugadores será la siguiente:
+  - nombre en minecraft : cadena
+  - alias : cadena
+  - nivel de experiencia : cadena ; {"noob", "pro"}
+  - mochila : mochila
+
+En la mochila solo se van a guardar items para recoleccion, y van a llevar un maximo de 3.
+
+La estructura de la mochila será la siguiente: 
+  - nombres : arreglo de cadena[3] ; {"pico", "pala", "hacha"}
+  - tipos : arreglo de cadenas[3] ; {"madera", "piedra", "oro", "hierro", "diamante"}
+
+
