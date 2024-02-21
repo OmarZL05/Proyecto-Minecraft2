@@ -33,4 +33,20 @@ Puntos por minerales:
 La duración de los partidos será de 45 minutos, el equipo con mas puntos ganá.
 El ganador obtiene 3 esmeraldas, en caso de empate, obtienen 1 esmeralda cada uno.
 
-Los dos mejores equipos seran los que obtengan mayor cantidad de esmeraldas al final de los 6 partidos. En caso 
+Los dos mejores equipos seran los que obtengan mayor cantidad de esmeraldas al final de los 6 partidos. 
+En caso de que haya un empate, el desempate sera mediante la cantidad de puntos a favor y en contra.
+
+El partido 7 sera exactamente igual que los anteriores, sin embargo no van a haber empates, 
+por tanto, en caso de ello, el primero en encontrar un diamante ganara, si ninguno consigue el diamante
+se realizara un PvP y ganara el equipo con mas jugadores con vida.
+
+Antes de empezar el torneo debe indicarse: 
+  - La cantidad de noobs y pros registrados
+  - La cantidad de objetos con diamantes presentes
+  - Nombre de los jugadores con picos de diamante;
+
+Al finalizar el torneo debe indicarse: 
+  - Los jugadores ganadores
+  - Cuantos participantes sobrevivieron en el ultimo encuentro por cada equipo
+  - El average de puntos del equipo ganador
+  - Dado el nombre de Minecraft de un jugador indicar en qué posicion quedó
