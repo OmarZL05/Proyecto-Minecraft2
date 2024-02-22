@@ -11,7 +11,11 @@ La estructura de los jugadores será la siguiente:
   - nombre en minecraft : cadena
   - alias : cadena
   - nivel de experiencia : cadena ; {"noob", "pro"}
-  - mochila : mochila
+  - mochila : arreglo de slot[3]
+
+slot:
+  nombre : cadena
+  tipo : cadena
 
 En la mochila solo se van a guardar items para recoleccion, y van a llevar un maximo de 3.
 
