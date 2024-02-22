@@ -1,3 +1,11 @@
+Funciones:
+  - registrarAlianzas : procedimiento
+  - registrarAlianza : procedimiento
+  - registrarJugadores : procedimiento
+  - registrarJugador : procedimiento
+  - iniciarTorneo : procedimiento
+  -
+
 4 Alianzas se van a enfrentar en un torneo. Cada alienza tendra alrededor de 8 participantes
 
 La estructura de las alienzas será la siguiente:
@@ -14,17 +22,12 @@ La estructura de los jugadores será la siguiente:
   - mochila : arreglo de slot[3]
 
 slot:
-  nombre : cadena
-  tipo : cadena
+  nombre : cadena ; {"pico", "pala", "hacha"}
+  tipo : cadena  ; {"madera", "piedra", "oro", "hierro", "diamante"}
 
 En la mochila solo se van a guardar items para recoleccion, y van a llevar un maximo de 3.
 
-La estructura de la mochila será la siguiente: 
-  - nombres : arreglo de cadena[3] ; {"pico", "pala", "hacha"}
-  - tipos : arreglo de cadenas[3] ; {"madera", "piedra", "oro", "hierro", "diamante"}
-
-
-Se realizaran 7 partidas, 6 de clasificacion y una de final, donde se enfrentaran las mejores Alianzas.
+Se realizaran 7 partidas, 6 de clasificacion y una de final, donde se enfrentaran las dos mejores Alianzas.
 
 En cada partida el PvP está activo, al igual que el respawn (5 min de espera) de un maximo de 5 veces por jugador.
 Cada equipo va a poder conseguir minerales {"oro", "hierro", "diamante"} los cuales les van a dar puntos.
