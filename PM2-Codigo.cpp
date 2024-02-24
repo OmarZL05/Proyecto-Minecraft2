@@ -62,7 +62,7 @@ int main() {
         int i=0;
         cout << "Registre a continuacion los integrantes de su equipo" << endl;
         cout << "Nota: El maximo de jugadores es 8" << endl;
-        while(op == 's' && i<=8) {
+        while(op == 's' && i<8) {
             cout << "Ingrese los datos del jugador " << i+1 << endl;
             registrarJugador(jugadores[i]);
             cout << "¿Desea registrar otro integrante? [s = Si] [s <> No]: ";
@@ -86,7 +86,13 @@ int main() {
             registrarAlianza(alianzas[i]);
         }
     }
-
+    
+    int iniciarRonda(alianza &av1, &alianza av2, bool rondaFinal) {
+        int puntos;
+        if(rondaFinal == True) {
+            
+        }
+    }
 
     registrarAlianzas(alianzas);
 
