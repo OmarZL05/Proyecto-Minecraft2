@@ -129,14 +129,29 @@ void iniciarRonda(alianza &equipo1, alianza &equipo2, bool rondaFinal) {
 
 void clasificacion() {
     /* 
-        [1, 2] 
-        [3, 4]
-        
+         
+        [i, j]
+        [1, 2]
         [1, 3]
         [1, 4]
         [2, 3]
         [2, 4]
+        [3, 4]
         
+        [ [1,2], [1,3], [1,4], [2,3], [2,4], [3,4] ]
+        iniciarRonda(alianzas[1], alianzas[2]);
+        iniciarRonda(alianzas[1], alianzas[3]);
+        iniciarRonda(alianzas[1], alianzas[4]);
+        iniciarRonda(alianzas[2], alianzas[3]);
+        iniciarRonda(alianzas[2], alianzas[4]);
+        iniciarRonda(alianzas[3], alianzas[4]);
+        while(j<4) {
+            if(r1 == r2) {
+                
+            }
+            j++;
+        }
+
     */
 }
 
