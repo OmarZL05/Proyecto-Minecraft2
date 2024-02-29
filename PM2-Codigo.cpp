@@ -23,6 +23,7 @@ struct alianza
     int puntosEnContra;
     int esmeraldas;
     jugador jugadores[8];
+    int registrosConcretados;
 };
 
 void registrarJugador(jugador &jug)
@@ -48,13 +49,15 @@ void registrarJugador(jugador &jug)
             cout << "Escoja una de las opciones indicadas.";
         }
     } while (op < 1 || op > 2);
-        cout << "Puedes llevar 3 items en tu mochila." << endl;
+    cout << "Puedes llevar 3 items en tu mochila." << endl;
     for (int i = 0; i < 3; i++)
     {
-        cout << "Tienes " << 3-i << " slots libres." << endl;
+        cout << "Tienes " << 3 - i << " slots libres." << endl;
         cout << "Indique el item. [pico] [pala] [hacha]" << endl;
         cin >> jug.mochila[i].nombre;
-        cout << "Indique el material del item. [madera] [piedra] [oro] [hierro] [diamante]" << endl;
+        cout << "Indique el material del item. [madera] [piedra] [oro] [hierro] "
+                "[diamante]"
+             << endl;
         cin >> jug.mochila[i].tipo;
     }
 }
@@ -69,6 +72,7 @@ void registrarJugadores(alianza &ali)
     {
         cout << "Ingrese los datos del jugador " << i + 1 << endl;
         registrarJugador(ali.jugadores[i]);
+        ali.registrosConcretados++;
         if (i < 7)
         {
             cout << "¿Desea registrar otro integrante? [s:si] [otro:no]: ";
@@ -90,9 +94,10 @@ void registrarAlianza(alianza &ali)
 
 int equipoMinar(string equipo)
 {
-    cout << "\nIndica la cantidad de menas minadas, alianza " << equipo << "." << endl;
+    cout << "\nIndica la cantidad de menas minadas, alianza " << equipo << "."
+         << endl;
     int cantDiamantes, cantOro, cantHierro;
-   
+
     cantDiamantes = 0;
     cantOro = 0;
     cantHierro = 0;
@@ -104,7 +109,7 @@ int equipoMinar(string equipo)
     cout << "Menas de oro minadas: ";
     cin >> cantOro;
 
-    return (cantDiamantes*25) + (cantOro * 10) + cantHierro;
+    return (cantDiamantes * 25) + (cantOro * 10) + cantHierro;
 }
 
 void iniciarRonda(alianza &equipo1, alianza &equipo2)
@@ -140,6 +145,92 @@ void iniciarRonda(alianza &equipo1, alianza &equipo2)
     }
 }
 
+int noobsEquipo(alianza ali)
+{
+    int cantNoobs = 0;
+    int max = ali.registrosConcretados;
+    for (int i = 0; i < max; i++)
+    {
+        if (ali.jugadores[i].experiencia == "noob")
+        {
+            cantNoobs++;
+        }
+    }
+    return cantNoobs;
+}
+
+int prosEquipo(alianza ali)
+{
+    int cantPros = 0;
+    int max = ali.registrosConcretados;
+    for (int i = 0; i < 8; i++)
+    {
+        if (ali.jugadores[i].experiencia == "pro")
+        {
+            cantPros++;
+        }
+    }
+    return cantPros;
+}
+
+int itemsDiamanteEquipo(alianza ali)
+{
+    int itemsDiamante = 0;
+    int max = ali.registrosConcretados;
+    for (int i = 0; i < max; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            if (ali.jugadores[i].mochila[j].tipo == "diamante")
+            {
+                itemsDiamante++;
+            }
+        }
+    }
+    return itemsDiamante;
+}
+
+void mostrarPicosDiamantes(alianza ali)
+{
+    int max = ali.registrosConcretados;
+    int j;
+    bool sinPico;
+    for (int i = 0; i < max; i++)
+    {
+        j=0;
+        sinPico = true;
+        while(j < 3 && sinPico == true)
+        {
+            if (ali.jugadores[i].mochila[j].nombre == "pico" && ali.jugadores[i].mochila[j].tipo == "diamante")
+            {
+                cout << ali.jugadores[i].nombre + " ";
+                sinPico = false;
+            }
+            j++;
+        }
+    }
+    cout << endl;
+}
+
+void preTorneo(alianza alianzas[4])
+{
+    int totalNoobs, totalPros, totalItemsDiamante;
+    totalNoobs = 0;
+    totalPros = 0;
+    totalItemsDiamante = 0;
+
+    for (int i = 0; i < 4; i++)
+    {
+        totalNoobs += noobsEquipo(alianzas[i]);
+        totalPros += prosEquipo(alianzas[i]);
+        totalItemsDiamante += itemsDiamanteEquipo(alianzas[i]);
+    }
+}
+
+void postTorneo()
+{
+}
+
 int main()
 {
     // Variables
@@ -147,7 +238,8 @@ int main()
 
     for (int i = 0; i < 4; i++)
     {
-        cout << "\nBienvenido, estás a punto de registrar la alianza N." << i + 1 << endl;
+        cout << "\nBienvenido, estás a punto de registrar la alianza N." << i + 1
+             << endl;
         registrarAlianza(alianzas[i]);
     }
 
@@ -159,7 +251,8 @@ int main()
     iniciarRonda(alianzas[2], alianzas[3]);
 
     cout << endl;
-    for(int i=0;i<4;i++) {
+    for (int i = 0; i < 4; i++)
+    {
         cout << alianzas[i].nombre << endl;
         cout << alianzas[i].esmeraldas << endl;
         cout << alianzas[i].puntosAFavor << endl;
