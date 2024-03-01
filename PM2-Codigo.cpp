@@ -92,6 +92,98 @@ void registrarAlianza(alianza &ali)
     registrarJugadores(ali);
 }
 
+
+int noobsEquipo(alianza ali)
+{
+    int cantNoobs = 0;
+    int max = ali.registrosConcretados;
+    for (int i = 0; i < max; i++)
+    {
+        if (ali.jugadores[i].experiencia == "noob")
+        {
+            cantNoobs++;
+        }
+    }
+    return cantNoobs;
+}
+
+int prosEquipo(alianza ali)
+{
+    int cantPros = 0;
+    int max = ali.registrosConcretados;
+    for (int i = 0; i < 8; i++)
+    {
+        if (ali.jugadores[i].experiencia == "pro")
+        {
+            cantPros++;
+        }
+    }
+    return cantPros;
+}
+
+int itemsDiamanteEquipo(alianza ali)
+{
+    int itemsDiamante = 0;
+    int max = ali.registrosConcretados;
+    for (int i = 0; i < max; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            if (ali.jugadores[i].mochila[j].tipo == "diamante")
+            {
+                itemsDiamante++;
+            }
+        }
+    }
+    return itemsDiamante;
+}
+
+void mostrarPicosDiamantes(alianza ali)
+{
+    int max = ali.registrosConcretados;
+    int j;
+    bool sinPico;
+    cout << ali.nombre << ": ";
+    for (int i = 0; i < max; i++)
+    {
+        j=0;
+        sinPico = true;
+        while(j < 3 && sinPico == true)
+        {
+            if (ali.jugadores[i].mochila[j].nombre == "pico" && ali.jugadores[i].mochila[j].tipo == "diamante")
+            {
+                cout << ali.jugadores[i].nombre + " ";
+                sinPico = false;
+            }
+            j++;
+        }
+    }
+    cout << endl;
+}
+
+void preTorneo(alianza alianzas[4])
+{
+    int totalNoobs, totalPros, totalItemsDiamante;
+    totalNoobs = 0;
+    totalPros = 0;
+    totalItemsDiamante = 0;
+
+    for (int i = 0; i < 4; i++)
+    {
+        totalNoobs += noobsEquipo(alianzas[i]);
+        totalPros += prosEquipo(alianzas[i]);
+        totalItemsDiamante += itemsDiamanteEquipo(alianzas[i]);
+    }
+    
+    cout << "\nNoobs registrados: " << totalNoobs;
+    cout << "Pros registrados: " << totalPros;
+    cout << "Cantidad de objetos de Diamante: " << totalItemsDiamante; 
+    cout << "Personas con pico de diamante en" << endl;
+    for(int i=0;i<4;i++) {
+        mostrarPicosDiamantes(alianzas[i]);
+    }
+}
+
 int equipoMinar(string equipo)
 {
     cout << "\nIndica la cantidad de menas minadas, alianza " << equipo << "."
@@ -145,88 +237,6 @@ void iniciarRonda(alianza &equipo1, alianza &equipo2)
     }
 }
 
-int noobsEquipo(alianza ali)
-{
-    int cantNoobs = 0;
-    int max = ali.registrosConcretados;
-    for (int i = 0; i < max; i++)
-    {
-        if (ali.jugadores[i].experiencia == "noob")
-        {
-            cantNoobs++;
-        }
-    }
-    return cantNoobs;
-}
-
-int prosEquipo(alianza ali)
-{
-    int cantPros = 0;
-    int max = ali.registrosConcretados;
-    for (int i = 0; i < 8; i++)
-    {
-        if (ali.jugadores[i].experiencia == "pro")
-        {
-            cantPros++;
-        }
-    }
-    return cantPros;
-}
-
-int itemsDiamanteEquipo(alianza ali)
-{
-    int itemsDiamante = 0;
-    int max = ali.registrosConcretados;
-    for (int i = 0; i < max; i++)
-    {
-        for (int j = 0; j < 3; j++)
-        {
-            if (ali.jugadores[i].mochila[j].tipo == "diamante")
-            {
-                itemsDiamante++;
-            }
-        }
-    }
-    return itemsDiamante;
-}
-
-void mostrarPicosDiamantes(alianza ali)
-{
-    int max = ali.registrosConcretados;
-    int j;
-    bool sinPico;
-    for (int i = 0; i < max; i++)
-    {
-        j=0;
-        sinPico = true;
-        while(j < 3 && sinPico == true)
-        {
-            if (ali.jugadores[i].mochila[j].nombre == "pico" && ali.jugadores[i].mochila[j].tipo == "diamante")
-            {
-                cout << ali.jugadores[i].nombre + " ";
-                sinPico = false;
-            }
-            j++;
-        }
-    }
-    cout << endl;
-}
-
-void preTorneo(alianza alianzas[4])
-{
-    int totalNoobs, totalPros, totalItemsDiamante;
-    totalNoobs = 0;
-    totalPros = 0;
-    totalItemsDiamante = 0;
-
-    for (int i = 0; i < 4; i++)
-    {
-        totalNoobs += noobsEquipo(alianzas[i]);
-        totalPros += prosEquipo(alianzas[i]);
-        totalItemsDiamante += itemsDiamanteEquipo(alianzas[i]);
-    }
-}
-
 void postTorneo()
 {
 }
@@ -242,6 +252,8 @@ int main()
              << endl;
         registrarAlianza(alianzas[i]);
     }
+
+    preTorneo(alianzas);
 
     iniciarRonda(alianzas[0], alianzas[1]);
     iniciarRonda(alianzas[0], alianzas[2]);
