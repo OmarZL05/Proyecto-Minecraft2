@@ -204,11 +204,47 @@ int equipoMinar(string equipo)
     return (cantDiamantes * 25) + (cantOro * 10) + cantHierro;
 }
 
-void iniciarRonda(alianza &equipo1, alianza &equipo2)
+int equipoMinar(string equipo)
+{
+    cout << "\nIndica la cantidad de menas minadas, alianza " << equipo << "."
+         << endl;
+    int cantDiamantes, cantOro, cantHierro;
+
+    cantDiamantes = 0;
+    cantOro = 0;
+    cantHierro = 0;
+
+    cout << "Menas de diamantes minadas: ";
+    cin >> cantDiamantes;
+    cout << "Menas de hierro minadas: ";
+    cin >> cantHierro;
+    cout << "Menas de oro minadas: ";
+    cin >> cantOro;
+
+    return (cantDiamantes * 25) + (cantOro * 10) + cantHierro;
+}
+
+void mostrarEquipoGanador(alianza equipo, bool final)
+{
+    cout << "\nGanador: " << equipo.nombre << endl;
+    if (final == true)
+    {
+        cout << "Integrantes: " << endl;
+        for (int i = 0; i < equipo.registrosConcretados; i++)
+        {
+            cout << equipo.jugadores[i].nombre << " ";
+        }
+        cout << "\nPuntos a favor: " << equipo.puntosAFavor << endl;
+        cout << "Puntos en contra: " << equipo.puntosEnContra << endl;
+        cout << "Average de puntos: " << (equipo.puntosAFavor - equipo.puntosEnContra) << endl;
+    }
+}
+
+void iniciarRonda(alianza &equipo1, alianza &equipo2, int ronda)
 {
     int ptsEquipo1, ptsEquipo2;
-    char op;
 
+    cout << "Ronda " << ronda << ": " << equipo1.nombre << " vs " << equipo2.nombre << endl;
     ptsEquipo1 = equipoMinar(equipo1.nombre);
     ptsEquipo2 = equipoMinar(equipo2.nombre);
 
@@ -222,23 +258,136 @@ void iniciarRonda(alianza &equipo1, alianza &equipo2)
     {
         // equipo1 gano
         equipo1.esmeraldas += 3;
+        mostrarEquipoGanador(equipo1, false);
     }
 
     if (ptsEquipo1 < ptsEquipo2)
     {
         // equipo2 gano
         equipo2.esmeraldas += 3;
+        mostrarEquipoGanador(equipo2, false);
     }
 
     if (ptsEquipo1 == ptsEquipo2)
     {
         equipo1.esmeraldas++;
         equipo2.esmeraldas++;
+        cout << "Empate." << endl;
     }
+    cout << endl;
 }
 
-void postTorneo()
+void rondaFinal(alianza &equipo1, alianza &equipo2)
 {
+    int ptsEquipo1, ptsEquipo2;
+    char op;
+    int win = 0;
+    int sobrev1, sobrev2;
+
+    cout << "Ronda final"
+         << ": " << equipo1.nombre << " vs " << equipo2.nombre << endl;
+    ptsEquipo1 = equipoMinar(equipo1.nombre);
+    ptsEquipo2 = equipoMinar(equipo2.nombre);
+
+    equipo1.puntosAFavor += ptsEquipo1;
+    equipo1.puntosEnContra += ptsEquipo2;
+
+    equipo2.puntosAFavor += ptsEquipo2;
+    equipo2.puntosEnContra += ptsEquipo1;
+
+    if (ptsEquipo1 > ptsEquipo2)
+    {
+        // equipo1 gano
+        equipo1.esmeraldas += 3;
+        mostrarEquipoGanador(equipo1, true);
+    }
+
+    if (ptsEquipo1 < ptsEquipo2)
+    {
+        // equipo2 gano
+        equipo2.esmeraldas += 3;
+        mostrarEquipoGanador(equipo1, true);
+    }
+
+    if (ptsEquipo1 == ptsEquipo2)
+    {
+        cout << "Ha ocurrido un empate. El primero en encontrar un diamante gana." << endl;
+        cout << "¿Alguno encontro un diamante? [s:si] [otro:no]: ";
+        cin >> op;
+        if (op == 's')
+        {
+            cout << "Que equipo lo encontro primero. [1:Equipo 1] [2:Equipo 2]: ";
+            cin >> win;
+            switch (win)
+            {
+            case 1:
+                mostrarEquipoGanador(equipo1, true);
+                break;
+            case 2:
+                mostrarEquipoGanador(equipo2, true);
+                break;
+            default:
+                break;
+            }
+        }
+        else
+        {
+            cout << "El PvP fue activo, el equipo con más jugadores ganará" << endl;
+            cout << "¿cuantos sobrevivieron " << equipo1.nombre << "?: ";
+            cin >> sobrev1;
+            cout << "¿cuantos sobrevivieron " << equipo2.nombre << "?: ";
+            cin >> sobrev2;
+            if (sobrev1 > sobrev2)
+            {
+                mostrarEquipoGanador(equipo1, true);
+            }
+            else
+            {
+                mostrarEquipoGanador(equipo2, true);
+            }
+
+            cout << "Sobrevivientes " << equipo1.nombre << ": " << sobrev1 << endl;
+            cout << "Sobrevivientes " << equipo2.nombre << ": " << sobrev2 << endl;
+        }
+    }
+    else
+    {
+        cout << "Sobrevivientes " << equipo1.nombre << ": " << equipo1.registrosConcretados << endl;
+        cout << "Sobrevivientes " << equipo2.nombre << ": " << equipo2.registrosConcretados << endl;
+    }
+    cout << endl;
+}
+
+int posicionIntegrante(alianza ali, string nombre) {
+    for(int i=0;i<ali.registrosConcretados;i++) {
+        if(ali.jugadores[i].nickname == nombre) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+void mostrarPosicionTop(alianza alianzas[4]) {
+    string nombre;
+    int i, pos;
+    i = 0;
+    pos = -1;
+
+    cout << "Indica un nombre de minecraft para buscar su posicion: ";
+    cin >> nombre;
+
+    while(pos == -1 && i < 4) {
+        pos = posicionIntegrante(alianzas[i], nombre);
+        if(pos > -1) {
+            cout << "El jugador " << alianzas[i].jugadores[pos].nickname << " quedo en el top " << i << endl;
+        }
+        i++;
+    }
+
+    if(pos == -1) {
+        cout << "No se ha encontrado al jugador" << endl;
+    }
+
 }
 
 int main()
@@ -255,19 +404,49 @@ int main()
 
     preTorneo(alianzas);
 
-    iniciarRonda(alianzas[0], alianzas[1]);
-    iniciarRonda(alianzas[0], alianzas[2]);
-    iniciarRonda(alianzas[0], alianzas[3]);
-    iniciarRonda(alianzas[1], alianzas[2]);
-    iniciarRonda(alianzas[1], alianzas[3]);
-    iniciarRonda(alianzas[2], alianzas[3]);
+    iniciarRonda(alianzas[0], alianzas[1], 1);
+    iniciarRonda(alianzas[0], alianzas[2], 2);
+    iniciarRonda(alianzas[0], alianzas[3], 3);
+    iniciarRonda(alianzas[1], alianzas[2], 4);
+    iniciarRonda(alianzas[1], alianzas[3], 5);
+    iniciarRonda(alianzas[2], alianzas[3], 6);
 
-    cout << endl;
+    alianza top[4];
+    alianza aux;
+
     for (int i = 0; i < 4; i++)
     {
-        cout << alianzas[i].nombre << endl;
-        cout << alianzas[i].esmeraldas << endl;
-        cout << alianzas[i].puntosAFavor << endl;
-        cout << alianzas[i].puntosEnContra << endl;
+        top[i] = alianzas[i];
     }
+
+    for (int i = 0; i < 4; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            if (top[j].esmeraldas < top[j + 1].esmeraldas)
+            {
+                aux = top[j];
+                top[j] = top[j + 1];
+                top[j + 1] = aux;
+            }
+            else
+            {
+                if (top[j].esmeraldas == top[j + 1].esmeraldas)
+                {
+                    if ((top[j].puntosAFavor - top[j].puntosEnContra) < (top[j + 1].puntosAFavor - top[j + 1].puntosEnContra))
+                    {
+                        aux = top[j];
+                        top[j] = top[j + 1];
+                        top[j + 1] = aux;
+                    }
+                }
+            }
+        }
+    }
+
+    rondaFinal(top[0], top[1]);
+
+    mostrarPosicionTop(top);
+
+
 }
