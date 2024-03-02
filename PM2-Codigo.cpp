@@ -204,26 +204,6 @@ int equipoMinar(string equipo)
     return (cantDiamantes * 25) + (cantOro * 10) + cantHierro;
 }
 
-int equipoMinar(string equipo)
-{
-    cout << "\nIndica la cantidad de menas minadas, alianza " << equipo << "."
-         << endl;
-    int cantDiamantes, cantOro, cantHierro;
-
-    cantDiamantes = 0;
-    cantOro = 0;
-    cantHierro = 0;
-
-    cout << "Menas de diamantes minadas: ";
-    cin >> cantDiamantes;
-    cout << "Menas de hierro minadas: ";
-    cin >> cantHierro;
-    cout << "Menas de oro minadas: ";
-    cin >> cantOro;
-
-    return (cantDiamantes * 25) + (cantOro * 10) + cantHierro;
-}
-
 void mostrarEquipoGanador(alianza equipo, bool final)
 {
     cout << "\nGanador: " << equipo.nombre << endl;
