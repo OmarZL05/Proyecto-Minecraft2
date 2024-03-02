@@ -174,12 +174,13 @@ void preTorneo(alianza alianzas[4])
         totalPros += prosEquipo(alianzas[i]);
         totalItemsDiamante += itemsDiamanteEquipo(alianzas[i]);
     }
-    
-    cout << "\nNoobs registrados: " << totalNoobs;
-    cout << "Pros registrados: " << totalPros;
-    cout << "Cantidad de objetos de Diamante: " << totalItemsDiamante; 
+
+    cout << "\nNoobs registrados: " << totalNoobs << endl;
+    cout << "Pros registrados: " << totalPros << endl;
+    cout << "Cantidad de objetos de Diamante: " << totalItemsDiamante << endl;
     cout << "Personas con pico de diamante en" << endl;
-    for(int i=0;i<4;i++) {
+    for (int i = 0; i < 4; i++)
+    {
         mostrarPicosDiamantes(alianzas[i]);
     }
 }
