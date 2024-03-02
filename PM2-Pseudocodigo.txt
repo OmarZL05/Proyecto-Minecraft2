@@ -42,367 +42,347 @@ Inicio
                 top[j + 1] <-- aux
             Si no
                 Si (top[j].esmeraldas == top[j + 1].esmeraldas) Entonces
-                    Si ((top[j].puntosAFavor - top[j].puntosEnContra) < (top[j + 1].puntosAFavor - top[j + 1].puntosEnContra))
-                    {
-                        aux = top[j];
-                        top[j] = top[j + 1];
-                        top[j + 1] = aux;
-                    }
-                }
-            }
-        }
-    }
+                    Si ( (top[j].puntosAFavor - top[j].puntosEnContra) < (top[j + 1].puntosAFavor - top[j + 1].puntosEnContra)) Entonces
+                        aux <-- top[j]
+                        top[j] <-- top[j + 1]
+                        top[j + 1] <-- aux
+                    Fin Si
+                Fin Si
+            Fin Si
+        Fin Para
+    Fin Para
 
-    rondaFinal(top[0], top[1]);
+    llamar rondaFinal(top[0], top[1]) 
 
-    mostrarPosicionTop(top);
+    llamar mostrarPosicionTop(top) 
+Fin
 
+Procedimiento registrarAlianza(↓↑ali: alianza)
+    Escribir "Indique el nombre de la alianza"
+    Leer ali.nombre 
+    ali.esmeraldas <-- 0 
+    ali.puntosAFavor <-- 0 
+    ali.puntosEnContra <-- 0 
+    llamar registrarJugadores(ali) 
+Fin Procedimiento
 
-}
+Procedimiento registrarJugadores(↓↑ali: alianza)
+Declaracion
+    Variables
+        op: Caracter
+        i: Entero
+Inicio
+    op <-- s
+    i <-- 1
+    Escribir "Registre a continuacion los integrantes de su equipo"
+    Escribir "Nota: El maximo de jugadores es 8"
+    Mientras (op == 's' && i < 8) Hacer
+        Escribir "Ingrese los datos del jugador ", i
+        llamar registrarJugador(ali.jugadores[i]) 
+        ali.registrosConcretados <-- ali.registrosConcretados + 1
+        Si (i < 7) Entonces
+            Escribir "¿Desea registrar otro integrante? [s:si] [otro:no]"
+            Leer op 
+        Fin Si
+        i++ 
+    Fin Mientras
+Fin Procedimiento
 
-
-
-void registrarJugador(jugador &jug)
-{
-    int op;
-    cout << "Indique el nombre: ";
-    getline(cin >> ws, jug.nombre);
-    cout << "Indique el nickname en minecraft: ";
-    cin >> jug.nickname;
-    cout << "Elija su nivel de experiencia [1: pro] [2: noob]" << endl;
-    do
-    {
-        cin >> op;
-        switch (op)
-        {
-        case 1:
-            jug.experiencia = "pro";
-            break;
-        case 2:
-            jug.experiencia = "noob";
-            break;
-        default:
-            cout << "Escoja una de las opciones indicadas.";
-        }
-    } while (op < 1 || op > 2);
-    cout << "Puedes llevar 3 items en tu mochila." << endl;
-    for (int i = 0; i < 3; i++)
-    {
-        cout << "Tienes " << 3 - i << " slots libres." << endl;
-        cout << "Indique el item. [pico] [pala] [hacha]" << endl;
-        cin >> jug.mochila[i].nombre;
-        cout << "Indique el material del item. [madera] [piedra] [oro] [hierro] "
-                "[diamante]"
-             << endl;
-        cin >> jug.mochila[i].tipo;
-    }
-}
-
-void registrarJugadores(alianza &ali)
-{
-    char op = 's';
-    int i = 0;
-    cout << "Registre a continuacion los integrantes de su equipo" << endl;
-    cout << "Nota: El maximo de jugadores es 8" << endl;
-    while (op == 's' && i < 8)
-    {
-        cout << "Ingrese los datos del jugador " << i + 1 << endl;
-        registrarJugador(ali.jugadores[i]);
-        ali.registrosConcretados++;
-        if (i < 7)
-        {
-            cout << "¿Desea registrar otro integrante? [s:si] [otro:no]: ";
-            cin >> op;
-        }
-        i++;
-    }
-}
-
-void registrarAlianza(alianza &ali)
-{
-    cout << "Indique el nombre de la alianza: ";
-    cin >> ali.nombre;
-    ali.esmeraldas = 0;
-    ali.puntosAFavor = 0;
-    ali.puntosEnContra = 0;
-    registrarJugadores(ali);
-}
-
-
-int noobsEquipo(alianza ali)
-{
-    int cantNoobs = 0;
-    int max = ali.registrosConcretados;
-    for (int i = 0; i < max; i++)
-    {
-        if (ali.jugadores[i].experiencia == "noob")
-        {
-            cantNoobs++;
-        }
-    }
-    return cantNoobs;
-}
-
-int prosEquipo(alianza ali)
-{
-    int cantPros = 0;
-    int max = ali.registrosConcretados;
-    for (int i = 0; i < 8; i++)
-    {
-        if (ali.jugadores[i].experiencia == "pro")
-        {
-            cantPros++;
-        }
-    }
-    return cantPros;
-}
-
-int itemsDiamanteEquipo(alianza ali)
-{
-    int itemsDiamante = 0;
-    int max = ali.registrosConcretados;
-    for (int i = 0; i < max; i++)
-    {
-        for (int j = 0; j < 3; j++)
-        {
-            if (ali.jugadores[i].mochila[j].tipo == "diamante")
-            {
-                itemsDiamante++;
-            }
-        }
-    }
-    return itemsDiamante;
-}
-
-void mostrarPicosDiamantes(alianza ali)
-{
-    int max = ali.registrosConcretados;
-    int j;
-    bool sinPico;
-    cout << ali.nombre << ": ";
-    for (int i = 0; i < max; i++)
-    {
-        j=0;
-        sinPico = true;
-        while(j < 3 && sinPico == true)
-        {
-            if (ali.jugadores[i].mochila[j].nombre == "pico" && ali.jugadores[i].mochila[j].tipo == "diamante")
-            {
-                cout << ali.jugadores[i].nombre + " ";
-                sinPico = false;
-            }
-            j++;
-        }
-    }
-    cout << endl;
-}
-
-void preTorneo(alianza alianzas[4])
-{
-    int totalNoobs, totalPros, totalItemsDiamante;
-    totalNoobs = 0;
-    totalPros = 0;
-    totalItemsDiamante = 0;
-
-    for (int i = 0; i < 4; i++)
-    {
-        totalNoobs += noobsEquipo(alianzas[i]);
-        totalPros += prosEquipo(alianzas[i]);
-        totalItemsDiamante += itemsDiamanteEquipo(alianzas[i]);
-    }
+Procedimiento registrarJugador(↓↑jug: jugador)
+Declaracion
+    Variables
+        op: Entero
+Inicio
+    Escribir "Indique el nombre"
+    Leer jug.nombre
+    Escribir "Indique el nickname en minecraft: " 
+    Leer jug.nickname 
+     Escribir "Elija su nivel de experiencia [1: pro] [2: noob]"   
+    Repetir
+        Leer op 
+        Caso (op)
+            1:
+                jug.experiencia <-- "pro" 
+            2:
+                jug.experiencia <-- "noob" 
+            si no:
+                Escribir "Escoja una de las opciones indicadas." 
+        Fin Caso
+    Mientras (op < 1 || op > 2) 
     
-    cout << "\nNoobs registrados: " << totalNoobs;
-    cout << "Pros registrados: " << totalPros;
-    cout << "Cantidad de objetos de Diamante: " << totalItemsDiamante; 
-    cout << "Personas con pico de diamante en" << endl;
-    for(int i=0;i<4;i++) {
-        mostrarPicosDiamantes(alianzas[i]);
-    }
-}
+    Escribir "Puedes llevar 3 items en tu mochila."
+    Para i <-- 1  Hasta 3 Hacer
+        Escribir "Tienes " << 3 - i << " slots libres." 
+        Escribir "Indique el item. [pico] [pala] [hacha]" 
+        Leer jug.mochila[i].nombre 
+        Escribir "Indique el material del item. [madera] [piedra] [oro] [hierro] [diamante]"
+        Leer jug.mochila[i].tipo 
+    Fin Para
+Fin Procedimiento
+
+Procedimiento preTorneo(alianzas: Arreglo de alianza[4])
+Declaracion
+    Variables
+        totalNoobs, totalPros, totalItemsDiamante: Entero
+Inicio
+    totalNoobs <-- 0
+    totalPros <-- 0 
+    totalItemsDiamante <-- 0 
+    Para i <-- 1 Hasta 4
+        totalNoobs <-- totalNoobs + noobsEquipo(alianzas[i]) 
+        totalPros <-- totalPros + prosEquipo(alianzas[i]) 
+        totalItemsDiamante <-- totalItemsDiamante + itemsDiamanteEquipo(alianzas[i]) 
+    Fin Para
+    
+    Escribir "\nNoobs registrados: ", totalNoobs 
+    Escribir "Pros registrados: ", totalPros 
+    Escribir "Cantidad de objetos de Diamante: ", totalItemsDiamante  
+    Escribir "Personas con pico de diamante en" 
+    Para i <-- 1 Hasta 4  
+        llamar mostrarPicosDiamantes(alianzas[i]) 
+    Fin Para
+Fin
+
+Procedimiento mostrarPicosDiamantes(alianza ali)
+Declaracion
+    Variables
+        max, i, j: Entero
+        sinPico: Logico
+Inicio
+    max <-- ali.registrosConcretados
+    Escribir ali.nombre << ": " 
+    Para i <-- 1 Hasta max
+        j <-- 1
+        sinPico <-- Verdadero
+        Mientras (j < 3 y sinPico = Verdadero) Hacer
+            Si (ali.jugadores[i].mochila[j].nombre = "pico" y ali.jugadores[i].mochila[j].tipo = "diamante") Entonces
+                Escribir ali.jugadores[i].nombre + " " 
+                sinPico <-- Falso 
+            Fin Si
+            j <-- j+1
+        Fin Mientras
+    Fin Para
+    Escribir "\n" 
+Fin Procedimiento
+
+Funcion noobsEquipo(alianza ali): Entero
+Declaracion
+    Variables
+        cantNoobs, max, i: Entero
+Inicio
+    cantNoobs <-- 0 
+    max <-- ali.registrosConcretados 
+    Para i <-- 1 Hasta max Hacer    
+        Si (ali.jugadores[i].experiencia = "noob") Entonces         
+            cantNoobs <-- cantNoobs + 1 
+        Fin Si
+    Fin Para
+    noobsEquipo <-- cantNoobs 
+Fin Funcion
+
+Funcion prosEquipo(alianza ali): Entero
+Declaracion
+    Variables
+        cantPros, max, i: Entero
+Inicio
+    cantPros <-- 0 
+    max <-- ali.registrosConcretados 
+    Para i <-- 1 Hasta max Hacer    
+        Si (ali.jugadores[i].experiencia = "pro") Entonces         
+            cantPros <-- cantPros + 1 
+        Fin Si
+    Fin Para
+    prosEquipo <-- cantPros 
+Fin Funcion
+
+Funcion itemsDiamanteEquipo(alianza ali): Entero
+Declaracion
+    Variables
+        itemsDiamante, max, i: Entero
+Inicio
+    itemsDiamante <-- 0
+    max <-- ali.registrosConcretados 
+    Para i <-- 1 Hasta max Hacer
+        Para j <-- 1 Hasta 3 Hacer
+            Si (ali.jugadores[i].mochila[j].tipo = "diamante")
+                itemsDiamante = itemsDiamante + 1 
+            Fin Si
+        Fin Para
+    Fin Para
+    itemsDiamanteEquipo <-- itemsDiamante 
+Fin
+
+
 
 int equipoMinar(string equipo)
-{
-    cout << "\nIndica la cantidad de menas minadas, alianza " << equipo << "."
-         << endl;
-    int cantDiamantes, cantOro, cantHierro;
+ 
+     Escribir "\nIndica la cantidad de menas minadas, alianza " << equipo << "."
+           
+    int cantDiamantes, cantOro, cantHierro 
 
-    cantDiamantes = 0;
-    cantOro = 0;
-    cantHierro = 0;
+    cantDiamantes = 0 
+    cantOro = 0 
+    cantHierro = 0 
 
-    cout << "Menas de diamantes minadas: ";
-    cin >> cantDiamantes;
-    cout << "Menas de hierro minadas: ";
-    cin >> cantHierro;
-    cout << "Menas de oro minadas: ";
-    cin >> cantOro;
+     Escribir "Menas de diamantes minadas: " 
+    Leer cantDiamantes 
+     Escribir "Menas de hierro minadas: " 
+    Leer cantHierro 
+     Escribir "Menas de oro minadas: " 
+    Leer cantOro 
 
-    return (cantDiamantes * 25) + (cantOro * 10) + cantHierro;
+    return (cantDiamantes * 25) + (cantOro * 10) + cantHierro 
 }
 
 void mostrarEquipoGanador(alianza equipo, bool final)
-{
-    cout << "\nGanador: " << equipo.nombre << endl;
-    if (final == true)
-    {
-        cout << "Integrantes: " << endl;
-        for (int i = 0; i < equipo.registrosConcretados; i++)
-        {
-            cout << equipo.jugadores[i].nombre << " ";
+ 
+     Escribir "\nGanador: " << equipo.nombre   
+    Si (final == true)
+     
+         Escribir "Integrantes: "   
+        for (int i = 0  i < equipo.registrosConcretados  i++)
+         
+             Escribir equipo.jugadores[i].nombre << " " 
         }
-        cout << "\nPuntos a favor: " << equipo.puntosAFavor << endl;
-        cout << "Puntos en contra: " << equipo.puntosEnContra << endl;
-        cout << "Average de puntos: " << (equipo.puntosAFavor - equipo.puntosEnContra) << endl;
+         Escribir "\nPuntos a favor: " << equipo.puntosAFavor   
+         Escribir "Puntos en contra: " << equipo.puntosEnContra   
+         Escribir "Average de puntos: " << (equipo.puntosAFavor - equipo.puntosEnContra)   
     }
 }
 
-void iniciarRonda(alianza &equipo1, alianza &equipo2, int ronda)
-{
-    int ptsEquipo1, ptsEquipo2;
+Procedimiento iniciarRonda(↑↓equipo1: alianza, ↑↓equipo2: alianza, ronda: Entero)
+Declaracion
+    Variables
+        ptsEquipo1, ptsEquipo2: Entero
+Inicio
+    Escribir "Ronda ", ronda, ": ", equipo1.nombre, " vs ", equipo2.nombre 
+    ptsEquipo1 <-- equipoMinar(equipo1.nombre) 
+    ptsEquipo2 <-- equipoMinar(equipo2.nombre) 
 
-    cout << "Ronda " << ronda << ": " << equipo1.nombre << " vs " << equipo2.nombre << endl;
-    ptsEquipo1 = equipoMinar(equipo1.nombre);
-    ptsEquipo2 = equipoMinar(equipo2.nombre);
+    equipo1.puntosAFavor = equipo1.puntosAFavor + ptsEquipo1 
+    equipo1.puntosEnContra = equipo1.puntosEnContra + ptsEquipo2 
 
-    equipo1.puntosAFavor += ptsEquipo1;
-    equipo1.puntosEnContra += ptsEquipo2;
+    equipo2.puntosAFavor = equipo2.puntosAFavor + ptsEquipo2 
+    equipo2.puntosEnContra += equipo2.puntosEnContra + ptsEquipo1 
+    
+    Si (ptsEquipo1 > ptsEquipo2) Entonces
+        equipo1.esmeraldas = equipo1.esmeraldas + 3 
+        mostrarEquipoGanador(equipo1, Falso) 
+    Fin Si
 
-    equipo2.puntosAFavor += ptsEquipo2;
-    equipo2.puntosEnContra += ptsEquipo1;
+    Si (ptsEquipo1 < ptsEquipo2) Entonces
+        equipo2.esmeraldas = equipo2.esmeraldas + 3 
+        mostrarEquipoGanador(equipo2, Falso) 
+    Fin Si
 
-    if (ptsEquipo1 > ptsEquipo2)
-    {
-        // equipo1 gano
-        equipo1.esmeraldas += 3;
-        mostrarEquipoGanador(equipo1, false);
-    }
+    Si (ptsEquipo1 == ptsEquipo2) Entonces
+        equipo1.esmeraldas = equipo1.esmeraldas + 1
+        equipo2.esmeraldas = equipo2.esmeraldas + 1
+        Escribir "Empate."
+    Fin Si
+     Escribir "\n" 
+Fin
 
-    if (ptsEquipo1 < ptsEquipo2)
-    {
-        // equipo2 gano
-        equipo2.esmeraldas += 3;
-        mostrarEquipoGanador(equipo2, false);
-    }
 
-    if (ptsEquipo1 == ptsEquipo2)
-    {
-        equipo1.esmeraldas++;
-        equipo2.esmeraldas++;
-        cout << "Empate." << endl;
-    }
-    cout << endl;
-}
+Procedimiento rondaFinal(↑↓equipo1: alianza, ↑↓equipo2: alianza)
+Declaracion
+    Variables
+        ptsEquipo1, ptsEquipo2, sobrev1, sobrev2, win: Entero
+        op: Caracter
+Inicio
+    Escribir "Ronda final", ": ", equipo1.nombre, " vs ", equipo2.nombre 
+    ptsEquipo1 <-- equipoMinar(equipo1.nombre) 
+    ptsEquipo2 <-- equipoMinar(equipo2.nombre) 
 
-void rondaFinal(alianza &equipo1, alianza &equipo2)
-{
-    int ptsEquipo1, ptsEquipo2;
-    char op;
-    int win = 0;
-    int sobrev1, sobrev2;
+    equipo1.puntosAFavor = equipo1.puntosAFavor + ptsEquipo1 
+    equipo1.puntosEnContra = equipo1.puntosEnContra + ptsEquipo2 
 
-    cout << "Ronda final"
-         << ": " << equipo1.nombre << " vs " << equipo2.nombre << endl;
-    ptsEquipo1 = equipoMinar(equipo1.nombre);
-    ptsEquipo2 = equipoMinar(equipo2.nombre);
+    equipo2.puntosAFavor = equipo2.puntosAFavor + ptsEquipo2 
+    equipo2.puntosEnContra += equipo2.puntosEnContra + ptsEquipo1 
+    
+    win <-- 0 
 
-    equipo1.puntosAFavor += ptsEquipo1;
-    equipo1.puntosEnContra += ptsEquipo2;
+    Si (ptsEquipo1 > ptsEquipo2) Entonces
+        equipo1.esmeraldas = equipo1.esmeraldas + 3 
+        mostrarEquipoGanador(equipo1, Verdadero) 
+    Fin Si
 
-    equipo2.puntosAFavor += ptsEquipo2;
-    equipo2.puntosEnContra += ptsEquipo1;
+    Si (ptsEquipo1 < ptsEquipo2) Entonces
+        equipo2.esmeraldas = equipo2.esmeraldas + 3 
+        mostrarEquipoGanador(equipo2, Verdadero) 
+    Fin Si
 
-    if (ptsEquipo1 > ptsEquipo2)
-    {
-        // equipo1 gano
-        equipo1.esmeraldas += 3;
-        mostrarEquipoGanador(equipo1, true);
-    }
+    Si (ptsEquipo1 == ptsEquipo2)
+     
+        Escribir "Ha ocurrido un empate. El primero en encontrar un diamante gana."   
+        Escribir "¿Alguno encontro un diamante? [s:si] [otro:no]" 
+        Leer op 
+        Si (op == 's') Entonces
+            Escribir "Que equipo lo encontro primero. [1:Equipo 1] [2:Equipo 2]" 
+            Leer win 
+            Caso (win)
+            1:
+                llamar mostrarEquipoGanador(equipo1, Verdadero) 
+            2:
+                llamar mostrarEquipoGanador(equipo2, Verdadero)
+            Fin Caso
+        Si no
+            Escribir "El PvP fue activo, el equipo con más jugadores ganará"   
+            Escribir "¿cuantos sobrevivieron " << equipo1.nombre << "?" 
+            Leer sobrev1 
+            Escribir "¿cuantos sobrevivieron " << equipo2.nombre << "?" 
+            Leer sobrev2 
+            Si (sobrev1 > sobrev2) Entonces
+                llamar mostrarEquipoGanador(equipo1, Verdadero)
+            Sino
+                llamar mostrarEquipoGanador(equipo2, Verdadero)
+            Fin Si
 
-    if (ptsEquipo1 < ptsEquipo2)
-    {
-        // equipo2 gano
-        equipo2.esmeraldas += 3;
-        mostrarEquipoGanador(equipo1, true);
-    }
+            Escribir "Sobrevivientes ", equipo1.nombre, ": ", sobrev1   
+            Escribir "Sobrevivientes ", equipo2.nombre, ": ", sobrev2   
+        Fin Si
+    Sino
+        Escribir "Sobrevivientes ", equipo1.nombre, ": ", equipo1.registrosConcretados   
+        Escribir "Sobrevivientes ", equipo2.nombre, ": ", equipo2.registrosConcretados   
+    Fin Si
+    Escribir "\n"
+Fin
 
-    if (ptsEquipo1 == ptsEquipo2)
-    {
-        cout << "Ha ocurrido un empate. El primero en encontrar un diamante gana." << endl;
-        cout << "¿Alguno encontro un diamante? [s:si] [otro:no]: ";
-        cin >> op;
-        if (op == 's')
-        {
-            cout << "Que equipo lo encontro primero. [1:Equipo 1] [2:Equipo 2]: ";
-            cin >> win;
-            switch (win)
-            {
-            case 1:
-                mostrarEquipoGanador(equipo1, true);
-                break;
-            case 2:
-                mostrarEquipoGanador(equipo2, true);
-                break;
-            default:
-                break;
-            }
-        }
-        else
-        {
-            cout << "El PvP fue activo, el equipo con más jugadores ganará" << endl;
-            cout << "¿cuantos sobrevivieron " << equipo1.nombre << "?: ";
-            cin >> sobrev1;
-            cout << "¿cuantos sobrevivieron " << equipo2.nombre << "?: ";
-            cin >> sobrev2;
-            if (sobrev1 > sobrev2)
-            {
-                mostrarEquipoGanador(equipo1, true);
-            }
-            else
-            {
-                mostrarEquipoGanador(equipo2, true);
-            }
+Funcion posicionIntegrante(ali: alianza, nombre: Cadena)  
+Declaracion
+    Variables
+        i: Entero
+Inicio
+    Para i <-- 1 Hasta ali.registrosConcretados  
+        Si (ali.jugadores[i].nickname = nombre) Entonces  
+            posicionIntegrante <-- i 
+        Fin Si
+    Fin Para
+    posicionIntegrante <-- -1 
+Fin Funcion
 
-            cout << "Sobrevivientes " << equipo1.nombre << ": " << sobrev1 << endl;
-            cout << "Sobrevivientes " << equipo2.nombre << ": " << sobrev2 << endl;
-        }
-    }
-    else
-    {
-        cout << "Sobrevivientes " << equipo1.nombre << ": " << equipo1.registrosConcretados << endl;
-        cout << "Sobrevivientes " << equipo2.nombre << ": " << equipo2.registrosConcretados << endl;
-    }
-    cout << endl;
-}
+Procedimiento mostrarPosicionTop(alianzas: Arreglo de alianza[4])  
+Declaracion
+    Variables
+        nombre: Cadena 
+        i, pos: Entero
+Inicio 
+    i <-- 1 
+    pos <-- -1 
 
-int posicionIntegrante(alianza ali, string nombre) {
-    for(int i=0;i<ali.registrosConcretados;i++) {
-        if(ali.jugadores[i].nickname == nombre) {
-            return i;
-        }
-    }
-    return -1;
-}
+    Escribir "Indica un nombre de minecraft para buscar su posicion" 
+    Leer nombre 
 
-void mostrarPosicionTop(alianza alianzas[4]) {
-    string nombre;
-    int i, pos;
-    i = 0;
-    pos = -1;
+    Mientras (pos = -1 y i <= 4) Hacer 
+        pos <-- posicionIntegrante(alianzas[i], nombre) 
+        Si (pos > -1)  
+             Escribir "El jugador ", alianzas[i].jugadores[pos].nickname, " quedo en el top ", i   
+        Fin Si
+        i <-- i+1
+    Fin Mientras
 
-    cout << "Indica un nombre de minecraft para buscar su posicion: ";
-    cin >> nombre;
-
-    while(pos == -1 && i < 4) {
-        pos = posicionIntegrante(alianzas[i], nombre);
-        if(pos > -1) {
-            cout << "El jugador " << alianzas[i].jugadores[pos].nickname << " quedo en el top " << i << endl;
-        }
-        i++;
-    }
-
-    if(pos == -1) {
-        cout << "No se ha encontrado al jugador" << endl;
-    }
-
-}
+    Si (pos = -1) Entonces  
+         Escribir "No se ha encontrado al jugador"   
+    Fin Si
+Fin
 

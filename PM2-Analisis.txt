@@ -18,19 +18,19 @@ La estructura de las alienzas será la siguiente:
 La estructura de los jugadores será la siguiente:
   - nombre en minecraft : cadena
   - alias : cadena
-  - nivel de experiencia : cadena ; {"noob", "pro"}
+  - nivel de experiencia : cadena    "noob", "pro"}
   - mochila : arreglo de slot[3]
 
 slot:
-  nombre : cadena ; {"pico", "pala", "hacha"}
-  tipo : cadena  ; {"madera", "piedra", "oro", "hierro", "diamante"}
+  nombre : cadena    "pico", "pala", "hacha"}
+  tipo : cadena     "madera", "piedra", "oro", "hierro", "diamante"}
 
 En la mochila solo se van a guardar items para recoleccion, y van a llevar un maximo de 3.
 
 Se realizaran 7 partidas, 6 de clasificacion y una de final, donde se enfrentaran las dos mejores Alianzas.
 
 En cada partida el PvP está activo, al igual que el respawn (5 min de espera) de un maximo de 5 veces por jugador.
-Cada equipo va a poder conseguir minerales {"oro", "hierro", "diamante"} los cuales les van a dar puntos.
+Cada equipo va a poder conseguir minerales  "oro", "hierro", "diamante"} los cuales les van a dar puntos.
 
 Puntos por minerales:
   - "hierro" : 1
@@ -50,7 +50,7 @@ se realizara un PvP y ganara el equipo con mas jugadores con vida.
 Antes de empezar el torneo debe indicarse: 
   - La cantidad de noobs y pros registrados
   - La cantidad de objetos con diamantes presentes
-  - Nombre de los jugadores con picos de diamante;
+  - Nombre de los jugadores con picos de diamante 
 
 Al finalizar el torneo debe indicarse: 
   - Los jugadores ganadores
